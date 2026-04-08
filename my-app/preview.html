@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1440" />
+<title>Crust Pizza Co. — Made-from-Scratch Pizzas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+<style>
+/* ── VARIABLES ── */
+:root {
+  --orange:      #F28C33;
+  --orange-dark: #d9751e;
+  --cream:       #F9F7F2;
+  --dark:        #1a1a1a;
+  --dark-card:   #1e1e1e;
+  --text-body:   #555;
+  --text-muted:  #999;
+  --r-card:      20px;
+  --shadow:      0 10px 30px rgba(0,0,0,0.06);
+  --shadow-h:    0 16px 40px rgba(0,0,0,0.13);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  background-color: var(--cream);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  color: var(--dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ── UTILS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 26px; border-radius: 50px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 0.88rem; letter-spacing: 0.1em;
+  transition: background .2s, transform .2s, box-shadow .2s;
+  cursor: pointer; border: none; white-space: nowrap;
+}
+.btn-orange { background: var(--orange); color: #fff; }
+.btn-orange:hover { background: var(--orange-dark); transform: scale(1.02); box-shadow: 0 6px 20px rgba(242,140,51,.4); }
+.btn-outline { background: transparent; color: var(--orange); border: 2px solid var(--orange); }
+.btn-outline:hover { background: var(--orange); color: #fff; transform: scale(1.02); }
+
+/* tape strips */
+.tape-frame { position: relative; }
+.tape {
+  position: absolute; width: 50px; height: 18px;
+  background: rgba(255,255,255,0.62);
+  border: 1px solid rgba(200,185,160,.45);
+  box-shadow: 0 1px 5px rgba(0,0,0,.08);
+  z-index: 10; pointer-events: none; border-radius: 2px;
+}
+.t-tl { top:-9px;  left:18px;  transform:rotate(-6deg); }
+.t-tr { top:-9px;  right:18px; transform:rotate(6deg);  }
+.t-bl { bottom:-9px; left:18px;  transform:rotate(6deg);  }
+.t-br { bottom:-9px; right:18px; transform:rotate(-6deg); }
+
+/* page cap */
+.page { max-width: 1440px; margin: 0 auto; }
+.sec { padding: 68px 72px; }
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.1rem;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+/* ── NAVBAR ── */
+nav.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px; height: 76px;
+  background: var(--cream);
+  position: sticky; top: 0; z-index: 200;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.nav-group { display: flex; align-items: center; gap: 30px; }
+.nav-a {
+  font-family: 'Bebas Neue', sans-serif; font-size: .85rem;
+  letter-spacing: .1em; color: var(--dark); transition: color .2s;
+}
+.nav-a:hover { color: var(--orange); }
+.nav-a.active {
+  background: var(--orange); color: #fff;
+  padding: 5px 14px; border-radius: 6px;
+}
+.nav-logo {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  top: 6px;
+}
+.logo-ring {
+  width: 68px; height: 68px; border-radius: 50%;
+  border: 2.5px solid var(--dark); background: var(--cream);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,.14);
+}
+.logo-ring .lt { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.1em; line-height:1; }
+.logo-ring .lp { font-size:1.05rem; line-height:1; }
+.logo-ring .lb { font-family:'Bebas Neue',sans-serif; font-size:.5rem; letter-spacing:.14em; line-height:1; }
+.icon-row { display:flex; align-items:center; gap:8px; }
+.icon-btn { background:none; border:none; cursor:pointer; padding:6px; color:var(--dark); display:flex; align-items:center; transition:color .2s; }
+.icon-btn:hover { color: var(--orange); }
+
+/* ── HERO ── */
+.hero {
+  margin: 18px 60px 0;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  position: relative; height: 430px;
+  box-shadow: var(--shadow);
+}
+.hero img { width:100%; height:100%; object-fit:cover; object-position:center 38%; }
+.hero-ov {
+  position:absolute; inset:0;
+  background: linear-gradient(105deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.44) 48%, rgba(0,0,0,.08) 100%);
+}
+.hero-cnt {
+  position:absolute; top:50%; left:68px; transform:translateY(-50%);
+  color:#fff; z-index:5; max-width:460px;
+}
+.hero-sub-script { font-family:'Dancing Script',cursive; font-size:1.1rem; color:var(--orange); margin-bottom:4px; }
+.hero-h1 {
+  font-family:'Bebas Neue',sans-serif; font-size:3.8rem;
+  line-height:1; letter-spacing:.03em; text-transform:uppercase; margin-bottom:10px;
+}
+.hero-h1 .script { font-family:'Dancing Script',cursive; font-size:3rem; font-weight:600; text-transform:none; letter-spacing:0; }
+.hero-p { font-family:'Playfair Display',serif; font-size:.88rem; color:rgba(255,255,255,.78); margin-bottom:24px; font-style:italic; }
+.hero .btn { font-size:.84rem; padding:12px 32px; }
+
+/* ── MENU ── */
+.menu-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+}
+.m-card {
+  background:#fff; border-radius:var(--r-card);
+  overflow:hidden; box-shadow:var(--shadow);
+  transition:transform .25s, box-shadow .25s;
+}
+.m-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-h); }
+.m-img { position:relative; height:162px; }
+.m-img img { width:100%; height:100%; }
+.m-price {
+  position:absolute; bottom:10px; right:10px;
+  background:var(--orange); color:#fff;
+  font-family:'Bebas Neue',sans-serif; font-size:1rem;
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.m-body { padding:14px 16px 20px; }
+.m-name { font-family:'Bebas Neue',sans-serif; font-size:.97rem; letter-spacing:.06em; margin-bottom:6px; }
+.m-desc { font-family:'Playfair Display',serif; font-size:.77rem; color:var(--text-body); line-height:1.55; }
+.menu-cta { text-align:center; margin-top:34px; }
+
+/* ── CHICAGO ── */
+.chicago {
+  display:grid; grid-template-columns:1fr 360px; gap:72px;
+  align-items:center; padding:68px 72px;
+}
+.ch-title {
+  font-family:'Bebas Neue',sans-serif; font-size:3rem;
+  line-height:1; letter-spacing:.03em; margin-bottom:18px;
+}
+.ch-desc { font-family:'Playfair Display',serif; font-size:.87rem; color:var(--text-body); line-height:1.7; margin-bottom:26px; }
+.ch-icons {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px 18px; margin-bottom:30px;
+}
+.ch-icon-item { display:flex; flex-direction:column; gap:5px; }
+.ch-icon-box {
+  width:46px; height:46px; border:2px solid var(--orange); border-radius:11px;
+  background:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:1.25rem; box-shadow:0 2px 8px rgba(242,140,51,.12);
+}
+.ch-icon-lbl { font-family:'Bebas Neue',sans-serif; font-size:.68rem; letter-spacing:.08em; color:var(--dark); }
+.ch-btns { display:flex; align-items:center; gap:22px; }
+.ch-link { font-family:'Bebas Neue',sans-serif; font-size:.84rem; letter-spacing:.08em; text-decoration:underline; text-underline-offset:3px; color:var(--dark); transition:color .2s; }
+.ch-link:hover { color:var(--orange); }
+
+/* polaroids */
+.ch-right {
+  position:relative; height:340px; display:flex;
+  align-items:center; justify-content:center;
+}
+.polaroid {
+  position:absolute; width:210px;
+  background:#fff; padding:9px 9px 28px;
+  box-shadow:0 8px 28px rgba(0,0,0,.16);
+}
+.polaroid img { width:100%; height:150px; object-fit:cover; }
+.p1 { top:10px;  left:-10px; transform:rotate(-5deg); z-index:2; }
+.p2 { bottom:10px; right:-10px; transform:rotate(5deg);  z-index:1; }
+
+/* ── WAYS ── */
+.ways-grid {
+  display:grid; grid-template-columns:1fr 400px; gap:30px; align-items:start;
+}
+.ways-pizza {
+  aspect-ratio:1/1; border-radius:var(--r-card);
+  overflow:hidden; position:relative; box-shadow:var(--shadow);
+}
+.ways-pizza img { width:100%; height:100%; object-fit:cover; }
+.ways-badge {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.06);
+}
+.ways-badge-inner {
+  width:128px; height:128px; border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.85); background:rgba(0,0,0,.52);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff;
+}
+.ways-badge-inner .wt { font-family:'Bebas Neue',sans-serif; font-size:1.55rem; letter-spacing:.12em; line-height:1; }
+.ways-badge-inner .ws { font-family:'Bebas Neue',sans-serif; font-size:.6rem; letter-spacing:.14em; opacity:.8; }
+.ways-cards { display:flex; flex-direction:column; gap:18px; padding-top:10px; }
+.w-card { padding:26px 26px 22px; border-radius:var(--r-card); box-shadow:var(--shadow); }
+.w-card.dark { background:var(--dark-card); color:#fff; }
+.w-icon {
+  font-size:1.5rem; background:var(--orange);
+  width:50px; height:50px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+}
+.w-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.35rem; letter-spacing:.05em; line-height:1.1; margin-bottom:8px; color:#fff; }
+.w-card p { font-family:'Playfair Display',serif; font-size:.8rem; color:rgba(255,255,255,.6); line-height:1.55; margin-bottom:16px; }
+
+/* ── COMMUNITY ── */
+.community {
+  display:grid; grid-template-columns:1fr 1fr; gap:56px;
+  align-items:center; padding:0 72px 68px;
+}
+.comm-left { display:flex; flex-direction:column; gap:14px; }
+.comm-img-wrap { border-radius:var(--r-card); overflow:hidden; height:200px; box-shadow:var(--shadow); }
+.comm-img-wrap img { height:100%; }
+.comm-handle { font-family:'Playfair Display',serif; font-size:.84rem; color:var(--text-muted); font-style:italic; }
+.comm-title { font-family:'Bebas Neue',sans-serif; font-size:1.75rem; letter-spacing:.04em; line-height:1.1; }
+.comm-desc { font-family:'Playfair Display',serif; font-size:.84rem; color:var(--text-body); line-height:1.65; }
+.why-title { font-family:'Bebas Neue',sans-serif; font-size:1.55rem; letter-spacing:.05em; margin-bottom:14px; }
+.why-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.why-grid img { border-radius:14px; height:148px; object-fit:cover; box-shadow:var(--shadow); transition:transform .25s; }
+.why-grid img:hover { transform:scale(1.04); }
+
+/* ── FRANCHISE ── */
+.franchise {
+  display:grid; grid-template-columns:1fr 280px 250px; gap:44px;
+  align-items:center; padding:64px 72px 68px;
+  border-top:1px solid rgba(0,0,0,.07);
+}
+.fr-title { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; letter-spacing:.04em; line-height:1.1; margin-bottom:12px; }
+.fr-desc { font-family:'Playfair Display',serif; font-size:.84rem; color:var(--text-body); margin-bottom:22px; line-height:1.6; }
+.fr-img { border-radius:var(--r-card); overflow:hidden; height:190px; box-shadow:var(--shadow); }
+.fr-img img { height:100%; }
+.sub-title { font-family:'Bebas Neue',sans-serif; font-size:1.45rem; letter-spacing:.05em; margin-bottom:18px; }
+.sub-btns { display:flex; flex-direction:column; gap:12px; }
+.sub-btns .btn { font-size:.8rem; padding:10px 24px; }
+
+/* ── FOOTER ── */
+footer {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:26px 72px 36px; border-top:1px solid rgba(0,0,0,.08); flex-wrap:wrap; gap:20px;
+}
+.foot-logo { display:flex; align-items:center; gap:14px; }
+.foot-ring {
+  width:52px; height:52px; border-radius:50%;
+  border:2.5px solid var(--dark); background:var(--cream);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;
+}
+.foot-ring .ft { font-family:'Bebas Neue',sans-serif; font-size:.85rem; letter-spacing:.1em; line-height:1; }
+.foot-ring .fp { font-size:.85rem; }
+.foot-ring .fb { font-family:'Bebas Neue',sans-serif; font-size:.42rem; letter-spacing:.12em; line-height:1; }
+.foot-tag { font-family:'Bebas Neue',sans-serif; font-size:.78rem; letter-spacing:.06em; line-height:1.35; }
+.foot-nav { display:flex; gap:26px; flex-wrap:wrap; }
+.foot-nav a { font-family:'Bebas Neue',sans-serif; font-size:.78rem; letter-spacing:.1em; color:var(--dark); transition:color .2s; }
+.foot-nav a:hover { color:var(--orange); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-group">
+      <a href="#" class="nav-a active">HOME</a>
+      <a href="#" class="nav-a">MENU</a>
+      <a href="#" class="nav-a">LOCATIONS</a>
+      <a href="#" class="nav-a">ORDER ONLINE</a>
+    </div>
+    <div class="nav-logo">
+      <div class="logo-ring">
+        <span class="lt">CRUST</span>
+        <span class="lp">🍕</span>
+        <span class="lb">PIZZA CO.</span>
+      </div>
+    </div>
+    <div class="nav-group">
+      <a href="#" class="nav-a">ABOUT</a>
+      <a href="#" class="nav-a">CONTACT</a>
+      <div class="icon-row">
+        <button class="icon-btn" aria-label="User">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="X / Twitter">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.738l7.72-8.833L1.254 2.25H8.08l4.257 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </button>
+      </div>
+      <a href="#" class="btn btn-orange" style="font-size:.82rem; padding:9px 22px;">CALL NOW</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero tape-frame">
+    <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=1300&q=85" alt="Pizza" />
+    <div class="hero-ov"></div>
+    <div class="hero-cnt">
+      <div class="hero-sub-script">Made-from scratch</div>
+      <h1 class="hero-h1">
+        FOR DELICIOUS,<br>
+        <span class="script">Made-from</span><br>
+        SCRATCH PIZZAS
+      </h1>
+      <p class="hero-p">More than a great name. Insanely good pizza.</p>
+      <a href="#" class="btn btn-orange">Order Online</a>
+    </div>
+    <div class="tape t-tl"></div><div class="tape t-tr"></div>
+    <div class="tape t-bl"></div><div class="tape t-br"></div>
+  </section>
+
+  <!-- MENU -->
+  <section class="sec" id="menu">
+    <h2 class="sec-title">OUR MENU</h2>
+    <div class="menu-grid">
+      <div class="m-card">
+        <div class="m-img">
+          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80" alt="Chicken Parm" />
+          <div class="m-price">19</div>
+        </div>
+        <div class="m-body">
+          <div class="m-name">CHICKEN PARM</div>
+          <p class="m-desc">Slow-roasted chicken, house marinara, fresh mozzarella, and basil pesto on thin crust.</p>
+        </div>
+      </div>
+      <div class="m-card">
+        <div class="m-img">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" alt="Chicken Alfredo" />
+          <div class="m-price">20</div>
+        </div>
+        <div class="m-body">
+          <div class="m-name">CHICKEN ALFREDO</div>
+          <p class="m-desc">House-made alfredo, rotisserie chicken, roasted garlic and asiago on a crispy base.</p>
+        </div>
+      </div>
+      <div class="m-card">
+        <div class="m-img">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80" alt="Spaghetti Meatballs" />
+          <div class="m-price">20</div>
+        </div>
+        <div class="m-body">
+          <div class="m-name">SPAGHETTI & MEATBALLS</div>
+          <p class="m-desc">Loose thin crust, hot honey sauce, speck, and goats cheese with herbed meatballs.</p>
+        </div>
+      </div>
+      <div class="m-card">
+        <div class="m-img">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80" alt="Mac Cheese" />
+          <div class="m-price">19</div>
+        </div>
+        <div class="m-body">
+          <div class="m-name">BAKED MAC & CHEESE</div>
+          <p class="m-desc">Fresh rigatoni, house-made four-cheese sauce, topped with golden panko breadcrumbs.</p>
+        </div>
+      </div>
+    </div>
+    <div class="menu-cta">
+      <a href="#" class="btn btn-outline">VIEW OUR COMPLETE MENU</a>
+    </div>
+  </section>
+
+  <!-- CHICAGO -->
+  <section class="chicago">
+    <div>
+      <h2 class="ch-title">HOME OF THE<br>CHICAGO-STYLE<br>THIN CRUST PIZZA</h2>
+      <p class="ch-desc">Slow-fermented dough pressed thin and hand-finished — our signature style that keeps
+        regulars coming back for more. Every pizza is crafted fresh daily using locally sourced ingredients.</p>
+      <div class="ch-icons">
+        <div class="ch-icon-item">
+          <div class="ch-icon-box">🎯</div>
+          <span class="ch-icon-lbl">CATERING CUISINE</span>
+        </div>
+        <div class="ch-icon-item">
+          <div class="ch-icon-box">🏢</div>
+          <span class="ch-icon-lbl">CORPORATE OFFICES</span>
+        </div>
+        <div class="ch-icon-item">
+          <div class="ch-icon-box">🍕</div>
+          <span class="ch-icon-lbl">NYC-STYLE ERUCO</span>
+        </div>
+        <div class="ch-icon-item">
+          <div class="ch-icon-box">📖</div>
+          <span class="ch-icon-lbl">LEARN MORE</span>
+        </div>
+        <div class="ch-icon-item">
+          <div class="ch-icon-box">🚗</div>
+          <span class="ch-icon-lbl">NUTRITION PICKLE</span>
+        </div>
+        <div class="ch-icon-item">
+          <div class="ch-icon-box">🌿</div>
+          <span class="ch-icon-lbl">FRANCHISING</span>
+        </div>
+      </div>
+      <div class="ch-btns">
+        <a href="#" class="btn btn-orange">LEARN MORE</a>
+        <a href="#" class="ch-link">SEE LOCATIONS</a>
+      </div>
+    </div>
+    <div class="ch-right">
+      <div class="polaroid p1 tape-frame">
+        <img src="https://images.unsplash.com/photo-1542574621-e088a4464792?w=400&q=80" alt="Team member" />
+        <div class="tape t-tl"></div><div class="tape t-tr"></div>
+      </div>
+      <div class="polaroid p2 tape-frame">
+        <img src="https://images.unsplash.com/photo-1508766917616-d22f3f1eea14?w=400&q=80" alt="Team member" />
+        <div class="tape t-tl"></div><div class="tape t-tr"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAYS TO ENJOY -->
+  <section class="sec">
+    <h2 class="sec-title">WAYS TO ENJOY</h2>
+    <div class="ways-grid">
+      <div class="ways-pizza tape-frame">
+        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=700&q=85" alt="Pepperoni pizza" />
+        <div class="ways-badge">
+          <div class="ways-badge-inner">
+            <span class="wt">CRUST</span>
+            <span class="ws">PIZZA CO.</span>
+          </div>
+        </div>
+        <div class="tape t-tl"></div><div class="tape t-tr"></div>
+        <div class="tape t-bl"></div><div class="tape t-br"></div>
+      </div>
+      <div class="ways-cards">
+        <div class="w-card dark">
+          <div class="w-icon">🏆</div>
+          <h3>AWARD-WINNING<br>PIZZA & SERVICE</h3>
+          <p>Recognized across the region for craft, consistency, and community. We don't just make pizza — we make memories.</p>
+          <a href="#" class="btn btn-orange" style="font-size:.78rem; padding:9px 22px;">LEARN MORE</a>
+        </div>
+        <div class="w-card dark">
+          <div class="w-icon">👨‍👩‍👧</div>
+          <h3>KIDS EAT FREE<br>TUESDAYS!</h3>
+          <p>Every Tuesday, kids 10 and under eat free with a paying adult. Bring the whole family for a night out.</p>
+          <a href="#" class="btn btn-orange" style="font-size:.78rem; padding:9px 22px;">VIEW OUR COMPLETE MENU</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY + WHY CHOOSE US -->
+  <section class="community">
+    <div class="comm-left">
+      <div class="comm-img-wrap tape-frame">
+        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&q=80" alt="Community" />
+        <div class="tape t-tl"></div><div class="tape t-tr"></div>
+      </div>
+      <p class="comm-handle">@yourbrandhandle</p>
+      <h3 class="comm-title">LET'S WORK TOGETHER<br>FOR OUR COMMUNITY</h3>
+      <p class="comm-desc">We believe food brings people together. Our catering and community programs are designed to serve more than just great pizza — they serve our neighbors.</p>
+    </div>
+    <div>
+      <h3 class="why-title">WHY CHOOSE US</h3>
+      <div class="why-grid">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&q=80" alt="Why 1" />
+        <img src="https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=300&q=80" alt="Why 2" />
+        <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=300&q=80" alt="Why 3" />
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&q=80" alt="Why 4" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FRANCHISE + SUBMIT -->
+  <section class="franchise">
+    <div>
+      <h2 class="fr-title">WANT TO OWN YOUR OWN<br>CRUST PIZZA CO.?</h2>
+      <p class="fr-desc">Join a fast-growing franchise family. Our franchise plan is designed to set you up for long-term success from day one.</p>
+      <a href="#" class="btn btn-orange">SUBMIT A REQUEST</a>
+    </div>
+    <div class="fr-img tape-frame">
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&q=80" alt="Location" />
+      <div class="tape t-tl"></div><div class="tape t-tr"></div>
+      <div class="tape t-bl"></div><div class="tape t-br"></div>
+    </div>
+    <div>
+      <h3 class="sub-title">SUBMIT A REQUEST</h3>
+      <div class="sub-btns">
+        <a href="#" class="btn btn-orange">LOCATIONS</a>
+        <a href="#" class="btn btn-orange">GET GIFT CARDS</a>
+        <a href="#" class="btn btn-orange">FOLLOW US</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-logo">
+      <div class="foot-ring">
+        <span class="ft">CRUST</span>
+        <span class="fp">🍕</span>
+        <span class="fb">PIZZA CO.</span>
+      </div>
+      <div class="foot-tag">WANT TO PLACE AN<br>ORDER NOW?</div>
+    </div>
+    <nav class="foot-nav">
+      <a href="#">MENU</a>
+      <a href="#">CATERING</a>
+      <a href="#">CATERING</a>
+      <a href="#">COMMISSIONS</a>
+      <a href="#">PRIVACY</a>
+      <a href="#">TERMS</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>
