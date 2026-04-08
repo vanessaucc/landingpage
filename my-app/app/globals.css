@@ -674,10 +674,167 @@ img { display: block; width: 100%; object-fit: cover; }
 }
 .footer-nav a:hover { color: var(--orange); }
 
-/* ─── RESPONSIVE MIN-WIDTH GUARD ─────────────────────────── */
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+/* ── Tablet (≤1100px) ── */
 @media (max-width: 1100px) {
-  .hero { margin: 12px 24px 0; }
+  .navbar { padding: 0 24px; gap: 16px; }
+  .nav-left, .nav-right { gap: 16px; }
+
+  .hero { margin: 12px 24px 0; height: 360px; }
+  .hero-title { font-size: 3rem; }
+  .hero-accent { font-size: 2.4rem; }
+
   .section { padding: 48px 24px; }
-  .navbar { padding: 0 24px; }
+
+  .menu-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .chicago-section { grid-template-columns: 1fr; gap: 40px; }
+  .chicago-right { height: 400px; }
+  .chicago-title { font-size: 2.4rem; }
+  .polaroid { width: 200px; }
+  .polaroid img { height: 260px; }
+
+  .ways-grid { grid-template-columns: 1fr 360px; gap: 24px; }
+
+  .community-section { grid-template-columns: 1fr 1fr; gap: 32px; }
+
+  .franchise-section {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 32px;
+  }
+  .franchise-left { grid-column: 1; grid-row: 1; }
+  .franchise-img-wrap { grid-column: 2; grid-row: 1 / 3; height: 300px; }
+  .submit-right { grid-column: 1; grid-row: 2; }
+
   .footer { padding: 24px; }
+}
+
+/* ── Mobile (≤768px) ── */
+@media (max-width: 768px) {
+
+  /* — Navbar — */
+  .navbar {
+    padding: 0 16px;
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    gap: 10px;
+    position: relative;
+  }
+  .nav-logo {
+    position: static;
+    transform: none;
+    order: -1;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+  .nav-left, .nav-right {
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nav-right { justify-content: center; }
+  .nav-link { font-size: 0.75rem; }
+  .btn-pill { font-size: 0.78rem; padding: 8px 16px; }
+
+  /* — Hero — */
+  .hero {
+    margin: 12px 16px 0;
+    height: 300px;
+    border-radius: 14px;
+  }
+  .hero-content {
+    left: 24px;
+    max-width: 280px;
+  }
+  .hero-title { font-size: 2.2rem; }
+  .hero-accent { font-size: 1.8rem; }
+  .hero-sub { font-size: 0.8rem; margin-bottom: 16px; }
+
+  /* — Sections — */
+  .section { padding: 40px 16px; }
+  .section-title { font-size: 1.8rem; margin-bottom: 24px; }
+
+  /* — Menu — */
+  .menu-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .menu-card-img-wrap { height: 130px; }
+  .menu-card-body { padding: 10px 12px 14px; }
+  .menu-card-title { font-size: 0.88rem; }
+
+  /* — Chicago — */
+  .chicago-section { gap: 32px; }
+  .chicago-title { font-size: 2rem; }
+  .chicago-icons-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .chicago-right { height: 340px; }
+  .polaroid { width: 170px; }
+  .polaroid img { height: 220px; }
+  .chicago-btns { gap: 24px; flex-wrap: wrap; }
+
+  /* — Ways to Enjoy — */
+  .ways-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .ways-pizza-wrap {
+    aspect-ratio: 4 / 3;
+    max-height: 280px;
+  }
+  .ways-cards { padding-top: 0; }
+
+  /* — Community — */
+  .community-section {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  /* — Franchise — */
+  .franchise-section {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 28px;
+  }
+  .franchise-left { grid-column: 1; grid-row: 1; }
+  .franchise-img-wrap { grid-column: 1; grid-row: 2; height: 240px; }
+  .submit-right { grid-column: 1; grid-row: 3; }
+  .franchise-title { font-size: 1.6rem; }
+  .submit-btns { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+
+  /* — Footer — */
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 16px;
+    gap: 20px;
+  }
+  .footer-nav { gap: 16px; }
+}
+
+/* ── Small Mobile (≤480px) ── */
+@media (max-width: 480px) {
+  .nav-left { display: none; } /* ocultar links secundarios en pantallas muy pequeñas */
+  .nav-right { width: 100%; justify-content: space-between; }
+
+  .hero { height: 260px; }
+  .hero-title { font-size: 1.9rem; }
+  .hero-accent { font-size: 1.5rem; }
+
+  .menu-grid { grid-template-columns: 1fr; }
+  .menu-card-img-wrap { height: 160px; }
+
+  .chicago-icons-grid { grid-template-columns: repeat(3, 1fr); }
+  .chicago-icon-label { font-size: 0.6rem; }
+
+  .ways-pizza-wrap { max-height: 240px; }
+
+  .why-grid { grid-template-columns: 1fr 1fr; }
+
+  .footer-nav { gap: 12px; }
+  .footer-nav a { font-size: 0.72rem; }
 }
